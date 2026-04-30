@@ -8,9 +8,9 @@ export default function Footer() {
           </p>
         </div>
         <div className="flex space-x-6">
-          <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Twitter</a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">GitHub</a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">LinkedIn</a>
+          <a href="https://www.behance.net/hussainrangwala3" className="text-sm text-muted-foreground hover:text-primary transition-colors">Behance</a>
+          <a href="https://github.com/hussain291105" className="text-sm text-muted-foreground hover:text-primary transition-colors">GitHub</a>
+          <a href="https://www.linkedin.com/in/hussain-rangwala-157117249/" className="text-sm text-muted-foreground hover:text-primary transition-colors">LinkedIn</a>
         </div>
       </div>
     </footer>
