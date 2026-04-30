@@ -154,7 +154,7 @@ export default function AIAssistance() {
       }
 
       if (flow === 'await_meeting_company') {
-        setFlow('await_contact');
+        setFlow('idle');
         const company = content;
         const dateText = formatDateLong(meetingDate);
         const timeText = formatTime12h(meetingTime);
@@ -170,8 +170,11 @@ Hussain Fakhruddin Rangwala`;
           setMessages(prev => [...prev, { role: 'assistant', content: reminder }]);
         }, 400);
         setTimeout(() => {
-          setMessages(prev => [...prev, { role: 'assistant', content: 'Office Contact Details.' }]);
+          setMessages(prev => [...prev, { role: 'assistant', content: 'Thank you For your Corporation.' }]);
         }, 900);
+        setTimeout(() => {
+          setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
+        }, 1400);
         return;
       }
 
@@ -203,10 +206,13 @@ Hussain Fakhruddin Rangwala`;
       }
 
       if (flow === 'await_cv_interview') {
-        setFlow('await_contact');
+        setFlow('idle');
         setTimeout(() => {
-          setMessages(prev => [...prev, { role: 'assistant', content: 'Office Contact Details.' }]);
+          setMessages(prev => [...prev, { role: 'assistant', content: 'Thank you For your Corporation.' }]);
         }, 400);
+        setTimeout(() => {
+          setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
+        }, 900);
         return;
       }
 
@@ -227,10 +233,13 @@ Hussain Fakhruddin Rangwala`;
       }
 
       if (flow === 'await_address') {
-        setFlow('await_contact');
+        setFlow('idle');
         setTimeout(() => {
-          setMessages(prev => [...prev, { role: 'assistant', content: 'Office Contact Details.' }]);
+          setMessages(prev => [...prev, { role: 'assistant', content: 'Thank you For your Corporation.' }]);
         }, 400);
+        setTimeout(() => {
+          setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
+        }, 900);
         return;
       }
 
