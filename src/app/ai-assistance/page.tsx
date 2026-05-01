@@ -15,6 +15,16 @@ const menuOptions = [
 export default function AIAssistance() {
   const router = useRouter();
   const cvTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leadRef = useRef({
+    companyDetails: '',
+    phone: '',
+    address: '',
+    officeContactDetails: '',
+    officePhone: '',
+    meetingCompany: '',
+    meetingDate: '',
+    meetingTime: '',
+  });
   const flowRef = useRef<
     'idle'
     | 'await_company_details'
@@ -42,6 +52,20 @@ export default function AIAssistance() {
   const [tempPeriod, setTempPeriod] = useState<'AM' | 'PM'>('AM');
   const [pickingType, setPickingType] = useState<'hour' | 'minute'>('hour');
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const sendLeadSms = async (message: string) => {
+    try {
+      await fetch('/api/send-sms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+    } catch {
+      // ignore
+    }
+  };
 
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -73,6 +97,7 @@ export default function AIAssistance() {
   };
 
   const handleMeetingDateSubmit = () => {
+    leadRef.current.meetingDate = format(meetingDate, 'dd/MM/yyyy');
     setMessages(prev => [...prev, { role: 'user', content: format(meetingDate, 'dd/MM/yyyy') }]);
     setMeetingTime('');
     setFlow('await_meeting_time');
@@ -83,6 +108,7 @@ export default function AIAssistance() {
     if (tempPeriod === 'PM' && h < 12) h += 12;
     if (tempPeriod === 'AM' && h === 12) h = 0;
     const time24 = `${String(h).padStart(2, '0')}:${tempMinute}`;
+    leadRef.current.meetingTime = formatTime12h(time24);
     setMessages(prev => [...prev, { role: 'user', content: formatTime12h(time24) }]);
     setMeetingTime(time24);
     setFlow('await_meeting_company');
@@ -110,6 +136,7 @@ export default function AIAssistance() {
         const isNumeric = /^\d+$/.test(content.replace(/\s+/g, ''));
         
         if (isNumeric) {
+          leadRef.current.officeContactDetails = content;
           setFlow('idle');
           setTimeout(() => {
             setMessages(prev => [...prev, { role: 'assistant', content: 'Thank you For your Corporation.' }]);
@@ -117,7 +144,10 @@ export default function AIAssistance() {
           setTimeout(() => {
             setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
           }, 900);
+
+          void sendLeadSms(`New Lead Received\n\nType: Other (contact provided)\nContact: ${leadRef.current.officeContactDetails}`);
         } else {
+          leadRef.current.officeContactDetails = content;
           setFlow('await_office_phone');
           setTimeout(() => {
             setMessages(prev => [...prev, { role: 'assistant', content: 'Office Phone Number.' }]);
@@ -127,6 +157,7 @@ export default function AIAssistance() {
       }
 
       if (flow === 'await_office_phone') {
+        leadRef.current.officePhone = content;
         setFlow('idle');
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Thank you For your Corporation.' }]);
@@ -134,6 +165,10 @@ export default function AIAssistance() {
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
         }, 900);
+
+        void sendLeadSms(
+          `New Lead Received\n\nType: Other\nContact Details: ${leadRef.current.officeContactDetails}\nOffice Phone: ${leadRef.current.officePhone}`
+        );
         return;
       }
 
@@ -156,6 +191,7 @@ export default function AIAssistance() {
       if (flow === 'await_meeting_company') {
         setFlow('idle');
         const company = content;
+        leadRef.current.meetingCompany = company;
         const dateText = formatDateLong(meetingDate);
         const timeText = formatTime12h(meetingTime);
         const reminder = `Dear ${company},
@@ -175,6 +211,10 @@ Hussain Fakhruddin Rangwala`;
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
         }, 1400);
+
+        void sendLeadSms(
+          `New Meeting Scheduled\n\nCompany: ${leadRef.current.meetingCompany}\nDate: ${leadRef.current.meetingDate}\nTime: ${leadRef.current.meetingTime}`
+        );
         return;
       }
 
@@ -200,6 +240,8 @@ Hussain Fakhruddin Rangwala`;
             { role: 'assistant', content: 'Thank you For your Corporation.' },
             { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' },
           ]);
+
+          void sendLeadSms('CV requested from AI Assistance page.');
           cvTimeoutRef.current = null;
         }, 20000);
         return;
@@ -213,10 +255,13 @@ Hussain Fakhruddin Rangwala`;
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
         }, 900);
+
+        void sendLeadSms(`CV flow response: ${content}`);
         return;
       }
 
       if (flow === 'await_company_details') {
+        leadRef.current.companyDetails = content;
         setFlow('await_phone');
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Phone Number.' }]);
@@ -225,6 +270,7 @@ Hussain Fakhruddin Rangwala`;
       }
 
       if (flow === 'await_phone') {
+        leadRef.current.phone = content;
         setFlow('await_address');
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Address.' }]);
@@ -233,6 +279,7 @@ Hussain Fakhruddin Rangwala`;
       }
 
       if (flow === 'await_address') {
+        leadRef.current.address = content;
         setFlow('idle');
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Thank you For your Corporation.' }]);
@@ -240,6 +287,10 @@ Hussain Fakhruddin Rangwala`;
         setTimeout(() => {
           setMessages(prev => [...prev, { role: 'assistant', content: 'Hussain Rangwala with connect with you Shortly....' }]);
         }, 900);
+
+        void sendLeadSms(
+          `New Lead Received\n\nType: Hire\nCompany Details: ${leadRef.current.companyDetails}\nPhone: ${leadRef.current.phone}\nAddress: ${leadRef.current.address}`
+        );
         return;
       }
 

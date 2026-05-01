@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import { Menu, X, Settings, ChevronDown, HelpCircle, Sun, Moon, Monitor } from 'lucide-react';
+import { Menu, X, ChevronDown, HelpCircle, Sun, Moon, Monitor } from 'lucide-react';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -67,12 +67,9 @@ export default function Navbar() {
                 <div className="p-4 border-b border-border">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-foreground">hussain</p>
+                      <p className="font-semibold text-foreground">Hussain Fakhruddin Rangwala</p>
                       <p className="text-sm text-muted-foreground">hussain.f.rang29@gmail.com</p>
                     </div>
-                    <button className="p-2 hover:bg-muted rounded-md transition-colors">
-                      <Settings size={18} />
-                    </button>
                   </div>
                 </div>
 
@@ -106,7 +103,11 @@ export default function Navbar() {
 
                   <div className="border-t border-border my-2"></div>
 
-                  <Link href="/ai-assistance" className="w-full flex items-center gap-3 px-3 py-2 hover:bg-muted rounded-md transition-colors text-left">
+                  <Link
+                    href="/ai-assistance"
+                    onClick={() => setDropdownOpen(false)}
+                    className="w-full flex items-center gap-3 px-3 py-2 hover:bg-muted rounded-md transition-colors text-left"
+                  >
                     <HelpCircle size={18} />
                     <span>Help</span>
                   </Link>
