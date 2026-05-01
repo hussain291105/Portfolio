@@ -7,7 +7,7 @@ const experiences = [
   {
     company: "Ezzy Auto Parts",
     companyUrl: "http://ezzyautoparts.com/",
-    position: "Cheif Executive Officer",
+    position: "Cheif Executive Officer (CEO)",
     period: "1 Month",
     salary: "300 د.ك",
     location: "25 St, Shuwaikh Industrial, Kuwait",
@@ -30,8 +30,8 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <section id="experience" className="section-padding">
-      <div className="max-w-5xl mx-auto px-4">
+    <section id="experience" className="py-20 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ export default function Experience() {
           <h2 className="text-3xl md:text-4xl font-bold">Work Experience</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {experiences.map((exp, index) => (
             <motion.div
               key={index}
@@ -55,51 +55,48 @@ export default function Experience() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="p-8 glass-card bg-primary/5 border-primary/20 hover:border-primary/40 transition-all group"
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                <div className="flex items-center gap-3">
-                  <div>
-                    <h3 className="text-2xl font-bold text-primary mb-1">
-                      {exp.companyUrl ? (
-                        <a
-                          href={exp.companyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block group-hover:translate-x-1 transition-transform"
-                        >
-                          {exp.company}
-                        </a>
-                      ) : (
-                        <span className="inline-block group-hover:translate-x-1 transition-transform">{exp.company}</span>
-                      )}
-                    </h3>
-                    <p className="text-lg font-semibold flex items-center gap-2">
-                      {exp.position}
-                      {exp.current && (
-                        <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full animate-pulse">
-                          CURRENT
-                        </span>
-                      )}
-                    </p>
-                    <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
-                      <MapPin size={14} className="text-primary" />
-                      {exp.location}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2 text-muted-foreground font-medium bg-background/50 px-3 py-1.5 rounded-lg border border-primary/10">
-                    <Calendar size={16} className="text-primary" />
-                    {exp.period}
-                  </div>
-                  {exp.salary && (
-                    <div className="flex items-center gap-2 text-muted-foreground font-medium bg-background/50 px-3 py-1.5 rounded-lg border border-primary/10">
-                      <Banknote size={16} className="text-primary" />
-                      {exp.salary}
-                    </div>
+              <div className="mb-4">
+                <h3 className="text-2xl font-bold text-primary mb-1">
+                  {exp.companyUrl ? (
+                    <a
+                      href={exp.companyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block group-hover:translate-x-1 transition-transform"
+                    >
+                      {exp.company}
+                    </a>
+                  ) : (
+                    <span className="inline-block group-hover:translate-x-1 transition-transform">{exp.company}</span>
                   )}
+                </h3>
+                <p className="text-lg font-semibold flex items-center gap-2">
+                  {exp.position}
+                  {exp.current && (
+                    <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full animate-pulse">
+                      CURRENT
+                    </span>
+                  )}
+                </p>
+                <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+                  <MapPin size={14} className="text-primary" />
+                  {exp.location}
                 </div>
               </div>
-              
+
+              <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex items-center gap-2 text-muted-foreground font-medium bg-background/50 px-3 py-1.5 rounded-lg border border-primary/10">
+                  <Calendar size={16} className="text-primary" />
+                  {exp.period}
+                </div>
+                {exp.salary && (
+                  <div className="flex items-center gap-2 text-muted-foreground font-medium bg-background/50 px-3 py-1.5 rounded-lg border border-primary/10">
+                    <Banknote size={16} className="text-primary" />
+                    {exp.salary}
+                  </div>
+                )}
+              </div>
+
               <p className="text-muted-foreground leading-relaxed mb-6 text-lg italic">
                 &quot;{exp.description}&quot;
               </p>
