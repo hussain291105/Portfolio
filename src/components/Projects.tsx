@@ -12,7 +12,7 @@ const projects = [
     details: 'This project involved creating a cohesive brand identity for a startup studio. The design process focused on balancing modern minimalism with high visual impact. I developed a comprehensive brand system that remains consistent across all touchpoints.',
     features: ['Custom Vector Logo', 'Brand Psychology & Color Theory', 'Typography Selection', 'Print-ready Assets'],
     tech: ['Illustrator', 'Photoshop', 'Branding'],
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=800&auto=format&fit=crop',
+    image: '/image/brand-identity-creative-studio.png',
     link: 'https://www.behance.net/hussainrangwala3',
   },
   {
@@ -21,7 +21,7 @@ const projects = [
     details: 'A professional showreel demonstrating advanced techniques in kinetic typography, character animation, and visual effects. Each segment was crafted to showcase timing, easing, and the ability to convey complex ideas through movement.',
     features: ['Kinetic Typography', '2D Character Animation', '3D Scene Composition', 'Dynamic Transitions'],
     tech: ['After Effects', 'Premiere Pro', 'Motion'],
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop',
+    image: '/image/motion-graphics.png',
     link: 'https://www.behance.net/hussainrangwala3',
   },
   {
@@ -30,7 +30,7 @@ const projects = [
     details: 'Designed and implemented multi-channel marketing campaigns. The focus was on conversion-led design, using visual hierarchy and color psychology to drive user action and improve engagement rates by 30%.',
     features: ['A/B Tested Ad Layouts', 'Instagram Story Sets', 'Animated Web Banners', 'Performance Analytics'],
     tech: ['Photoshop', 'CorelDraw', 'Marketing'],
-    image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=800&auto=format&fit=crop',
+    image: '/image/social-media-marketing.png',
     link: 'https://www.behance.net/hussainrangwala3',
   },
   {
@@ -39,7 +39,7 @@ const projects = [
     details: 'A high-performance full-stack application built for scale. It features a custom-built shopping cart, real-time inventory management, and a secure checkout flow. The backend is optimized for lightning-fast database queries.',
     features: ['Dynamic Product Filtering', 'Real-time Stock Updates', 'Secure Stripe Checkout', 'Admin Inventory Portal'],
     tech: ['Next.js', 'Tailwind', 'MongoDB'],
-    image: 'https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=800&auto=format&fit=crop',
+    image: '/image/Modern-E-Commerce.png',
     link: 'https://github.com/hussain291105?tab=repositories',
   },
   {
@@ -48,7 +48,7 @@ const projects = [
     details: 'A complex data-visualization project that transforms raw business metrics into actionable insights. Built with a focus on component reusability and performance, handling large datasets without compromising on speed.',
     features: ['Interactive Chart.js Graphics', 'Real-time Data Sync', 'Custom Filter Engine', 'Responsive Data Tables'],
     tech: ['React', 'Node.js', 'TypeScript'],
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop',
+    image: '/image/SaaS-Dashboard.png',
     link: 'https://github.com/hussain291105?tab=repositories',
   },
   {
@@ -57,7 +57,7 @@ const projects = [
     details: 'This project is a deep dive into advanced UI/UX principles. I focused on the "Design Thinking" process: empathizing with users, defining pain points, and creating high-fidelity prototypes that offer an intuitive user experience. Every interaction is designed to feel natural and responsive.',
     features: ['User Persona Mapping', 'High-Fidelity Wireframes', 'Framer Motion Animations', 'Accessibility (WCAG) Compliant'],
     tech: ['Next.js', 'Framer Motion', 'Tailwind'],
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop',
+    image: '/image/UI-UX-Portfolio.png',
     link: 'https://github.com/hussain291105?tab=repositories',
   },
 ];
@@ -95,6 +95,8 @@ export default function Projects() {
                 src={project.image}
                 alt={project.title}
                 fill
+                loading={project.title === 'Motion Graphics Showreel' ? 'eager' : 'lazy'}
+                priority={project.title === 'Motion Graphics Showreel'}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
