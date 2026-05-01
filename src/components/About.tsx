@@ -13,9 +13,9 @@ const skills = [
 ];
 
 const languages = [
-  { name: 'ENGLISH', level: 85 },
+  { name: 'ENGLISH', level: 75 },
   { name: 'HINDI', level: 95 },
-  { name: 'ARABIC', level: 70 },
+  { name: 'ARABIC', level: 25 },
   { name: 'GUJRATI', level: 100 },
 ];
 
@@ -119,47 +119,114 @@ export default function About() {
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-12 max-w-3xl mx-auto p-6 glass-card bg-primary/5 border-primary/20"
-        >
-          <h3 className="text-xl font-bold mb-6 text-center underline underline-offset-8 decoration-primary/50">Core Skills</h3>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-            <div>
-              <h4 className="text-xs font-bold text-primary uppercase tracking-wider mb-3 text-center md:text-right">Design</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground text-center md:text-right">
-                <li>Logo Design</li>
-                <li>Social Media Ads</li>
-                <li>Business Card</li>
-                <li>Web Banners</li>
-                <li>Branding</li>
-                <li>Brochure Design</li>
-                <li>Packaging</li>
-                <li>Invoice Design</li>
-                <li>Flyer Design</li>
-                <li>Menu Card</li>
+        <div className="mt-12">
+          <h3 className="text-2xl font-bold mb-8 text-center">Core Skills</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="p-8 glass-card bg-primary/5 border-primary/20 hover:border-primary/40 transition-all"
+            >
+              <h4 className="text-lg font-bold text-primary uppercase tracking-widest mb-6 text-center">Design</h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-base text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Logo Design
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Social Media Ads
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Business Card
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Web Banners
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Branding
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Brochure Design
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Packaging
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Invoice Design
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Flyer Design
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Menu Card
+                </li>
               </ul>
-            </div>
-            <div className="border-l border-primary/20 pl-8">
-              <h4 className="text-xs font-bold text-primary uppercase tracking-wider mb-3 text-center md:text-left">Development</h4>
-              <ul className="space-y-1 text-sm text-muted-foreground text-center md:text-left">
-                <li>Frontend Development</li>
-                <li>Backend Architecture</li>
-                <li>Database Management</li>
-                <li>RESTful API Design</li>
-                <li>UI/UX Implementation</li>
-                <li>Performance Optimization</li>
-                <li>Cloud Deployment</li>
-                <li>Responsive Web Design</li>
-                <li>State Management</li>
-                <li>Version Control (Git)</li>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="p-8 glass-card bg-primary/5 border-primary/20 hover:border-primary/40 transition-all"
+            >
+              <h4 className="text-lg font-bold text-primary uppercase tracking-widest mb-6 text-center">Development</h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-base text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Frontend Development
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Backend Architecture
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Database Management
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  RESTful API Design
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  UI/UX Implementation
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Performance Optimization
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Cloud Deployment
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Responsive Web Design
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  State Management
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/40" />
+                  Version Control (Git)
+                </li>
               </ul>
-            </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
