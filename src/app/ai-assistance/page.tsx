@@ -5,6 +5,53 @@ import { useRouter } from 'next/navigation';
 import { Send, Bot, User, List, ArrowLeft, ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, isSameDay, addDays } from 'date-fns';
 
+type ChatMessage = { role: 'assistant' | 'user'; content: string };
+
+const STORAGE_KEY = 'ai_assistance_state_v1';
+
+const readStoredState = () => {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as {
+      messages?: ChatMessage[];
+      showMenu?: boolean;
+      showAllOptions?: boolean;
+      flow?:
+        | 'idle'
+        | 'await_company_details'
+        | 'await_phone'
+        | 'await_address'
+        | 'await_cv_interview'
+        | 'await_meeting_date'
+        | 'await_meeting_time'
+        | 'await_meeting_company'
+        | 'await_contact'
+        | 'await_office_phone';
+      lead?: {
+        companyDetails?: string;
+        phone?: string;
+        address?: string;
+        officeContactDetails?: string;
+        officePhone?: string;
+        meetingCompany?: string;
+        meetingDate?: string;
+        meetingTime?: string;
+      };
+      meetingDate?: string;
+      currentMonth?: string;
+      meetingTime?: string;
+      tempHour?: string;
+      tempMinute?: string;
+      tempPeriod?: 'AM' | 'PM';
+      pickingType?: 'hour' | 'minute';
+    };
+  } catch {
+    return null;
+  }
+};
+
 const menuOptions = [
   'Want to hire you',
   'Send me your CV',
@@ -37,10 +84,12 @@ export default function AIAssistance() {
     | 'await_contact'
     | 'await_office_phone'
   >('idle');
-  const [messages, setMessages] = useState([
+
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'assistant', content: 'Hello! I\'m your AI assistant. How can I help you today ?' }
   ]);
   const [input, setInput] = useState('');
+
   const [showMenu, setShowMenu] = useState(true);
   const [showAllOptions, setShowAllOptions] = useState(false);
   const [flow, setFlow] = useState<'idle' | 'await_company_details' | 'await_phone' | 'await_address' | 'await_cv_interview' | 'await_meeting_date' | 'await_meeting_time' | 'await_meeting_company' | 'await_contact' | 'await_office_phone'>('idle');
@@ -52,6 +101,82 @@ export default function AIAssistance() {
   const [tempPeriod, setTempPeriod] = useState<'AM' | 'PM'>('AM');
   const [pickingType, setPickingType] = useState<'hour' | 'minute'>('hour');
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stored = readStoredState();
+    if (!stored) return;
+
+    setTimeout(() => {
+      let restoredHasHistory = false;
+      if (Array.isArray(stored.messages) && stored.messages.length > 0) {
+        const sanitized = stored.messages.filter(
+          (m): m is ChatMessage => !!m && (m.role === 'assistant' || m.role === 'user') && typeof m.content === 'string'
+        );
+        if (sanitized.length) {
+          restoredHasHistory = sanitized.some((m) => m.role === 'user');
+          setMessages(sanitized);
+        }
+      }
+      if (restoredHasHistory) {
+        setFlow('idle');
+        setShowAllOptions(false);
+        setShowMenu(true);
+      } else if (typeof stored.showMenu === 'boolean') {
+        setShowMenu(stored.showMenu);
+      }
+      if (typeof stored.showAllOptions === 'boolean') setShowAllOptions(stored.showAllOptions);
+      if (stored.flow) setFlow(stored.flow);
+      if (stored.lead && typeof stored.lead === 'object') {
+        leadRef.current = {
+          ...leadRef.current,
+          ...stored.lead,
+        };
+      }
+      if (stored.meetingDate) setMeetingDate(new Date(stored.meetingDate));
+      if (stored.currentMonth) setCurrentMonth(new Date(stored.currentMonth));
+      if (typeof stored.meetingTime === 'string') setMeetingTime(stored.meetingTime);
+      if (typeof stored.tempHour === 'string') setTempHour(stored.tempHour);
+      if (typeof stored.tempMinute === 'string') setTempMinute(stored.tempMinute);
+      if (stored.tempPeriod === 'AM' || stored.tempPeriod === 'PM') setTempPeriod(stored.tempPeriod);
+      if (stored.pickingType === 'hour' || stored.pickingType === 'minute') setPickingType(stored.pickingType);
+    }, 0);
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          messages,
+          showMenu,
+          showAllOptions,
+          flow,
+          lead: leadRef.current,
+          meetingDate: meetingDate.toISOString(),
+          currentMonth: currentMonth.toISOString(),
+          meetingTime,
+          tempHour,
+          tempMinute,
+          tempPeriod,
+          pickingType,
+        })
+      );
+    } catch {
+      // ignore
+    }
+  }, [
+    messages,
+    showMenu,
+    showAllOptions,
+    flow,
+    meetingDate,
+    currentMonth,
+    meetingTime,
+    tempHour,
+    tempMinute,
+    tempPeriod,
+    pickingType,
+  ]);
 
   const sendLeadSms = async (message: string) => {
     try {
@@ -302,9 +427,16 @@ Hussain Fakhruddin Rangwala`;
         return;
       }
 
+      const greeting = "Hello! I'm your AI assistant. How can I help you today ?";
       setTimeout(() => {
-        setMessages(prev => [...prev, { role: 'assistant', content: 'Thanks for your message! I\'ll get back to you soon.' }]);
-      }, 1000);
+        setMessages((prev) => {
+          const last = prev[prev.length - 1];
+          if (last?.role === 'assistant' && last.content === greeting) return prev;
+          return [...prev, { role: 'assistant', content: greeting }];
+        });
+      }, 300);
+      setShowMenu(true);
+      setShowAllOptions(false);
     }
   };
 
@@ -333,6 +465,7 @@ Hussain Fakhruddin Rangwala`;
             <p className="text-muted-foreground">Get help with your questions and tasks</p>
             <div className="w-20 h-1.5 bg-primary mt-6 rounded-full mx-auto" />
           </div>
+
         </div>
 
         <div className="glass-card overflow-hidden">
