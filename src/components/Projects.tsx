@@ -12,7 +12,7 @@ const projects = [
     details: 'This project involved creating a cohesive brand identity for a startup studio. The design process focused on balancing modern minimalism with high visual impact. I developed a comprehensive brand system that remains consistent across all touchpoints.',
     features: ['Custom Vector Logo', 'Brand Psychology & Color Theory', 'Typography Selection', 'Print-ready Assets'],
     tech: ['Illustrator', 'Photoshop', 'Branding'],
-    image: '/image/brand-identity-creative-studio.png',
+    image: '/image/Brand-Identity-Creative-Studio.png',
     link: 'https://www.behance.net/hussainrangwala3',
   },
   {
